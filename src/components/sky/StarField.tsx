@@ -88,7 +88,41 @@ export function StarField({ variant = 'journey' }: { variant?: 'journey' | 'calm
       const enableTwinkle = variant === 'journey' && !isReducedMotion;
       const enableParallax = variant === 'journey' && !isReducedMotion;
 
-      stars.forEach((star) => {
+      // Occasional shooting star
+      if (!isReducedMotion && Math.random() < 0.005) {
+        // spawn shooting star
+        stars.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * (window.innerHeight / 2), // spawn in top half
+          r: 1, // acts as thickness
+          layer: 3, // special layer for shooting star
+          twinklePhase: 0,
+          twinkleSpeed: 0,
+        });
+      }
+
+      for (let i = stars.length - 1; i >= 0; i--) {
+        const star = stars[i];
+        
+        if (star.layer === 3) {
+          // shooting star logic
+          star.x -= 20; // move left and down
+          star.y += 20;
+          star.twinklePhase += 0.1; // acts as opacity fader
+          
+          ctx.beginPath();
+          ctx.moveTo(star.x, star.y);
+          ctx.lineTo(star.x + 60, star.y - 60); // trail
+          ctx.strokeStyle = `rgba(255, 255, 255, ${Math.max(0, 1 - star.twinklePhase)})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          
+          if (star.twinklePhase > 1) {
+            stars.splice(i, 1);
+          }
+          continue;
+        }
+
         let opacity = 0.5 + (star.layer * 0.2); // base opacity
         if (enableTwinkle) {
           star.twinklePhase += star.twinkleSpeed;
@@ -106,7 +140,7 @@ export function StarField({ variant = 'journey' }: { variant?: 'journey' | 'calm
         ctx.arc(star.x, y, star.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(245, 247, 255, ${Math.max(0.1, Math.min(1, opacity))})`;
         ctx.fill();
-      });
+      }
 
       ctx.restore();
     };

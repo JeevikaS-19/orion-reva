@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ORION_VIEWBOX, STARS, EDGES } from '../../content/orion';
 import { CHAPTERS } from '../../content/chapters';
 
@@ -8,6 +9,7 @@ interface OrionFigureProps {
 }
 
 export function OrionFigure({ progress, isReducedMotion }: OrionFigureProps) {
+  const [activeStar, setActiveStar] = useState<string | null>(null);
   const n = CHAPTERS.length;
   
   // Pre-calculate which chapter lights which star
@@ -110,7 +112,11 @@ export function OrionFigure({ progress, isReducedMotion }: OrionFigureProps) {
           }
 
           return (
-            <g key={s.id} style={{ transform: `scale(${scale})`, transformOrigin: `${s.x}px ${s.y}px` }}>
+            <g 
+              key={s.id} 
+              style={{ transform: `scale(${scale})`, transformOrigin: `${s.x}px ${s.y}px`, cursor: opacity > 0.5 ? 'pointer' : 'default' }}
+              onClick={() => { if (opacity > 0.5) setActiveStar(activeStar === s.id ? null : s.id); }}
+            >
               <circle
                 cx={s.x}
                 cy={s.y}
@@ -125,6 +131,11 @@ export function OrionFigure({ progress, isReducedMotion }: OrionFigureProps) {
                 fill={`var(--color-${s.color})`}
                 style={{ opacity }}
               />
+              {activeStar === s.id && (
+                <text x={s.x + 4} y={s.y - 4} fill="var(--color-star)" fontSize="4" fontWeight="bold" style={{ pointerEvents: 'none' }}>
+                  {s.name}
+                </text>
+              )}
             </g>
           );
         })}
