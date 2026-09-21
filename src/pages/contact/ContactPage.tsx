@@ -1,0 +1,1 @@
+export function ContactPage() { return <div className="p-8"><h1>Contact Page Placeholder</h1></div>; }

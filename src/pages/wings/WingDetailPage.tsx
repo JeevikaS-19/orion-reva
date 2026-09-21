@@ -1,0 +1,1 @@
+import { useParams } from "react-router-dom"; export function WingDetailPage() { const { slug } = useParams(); return <div className="p-8"><h1>Wing Detail Placeholder for {slug}</h1></div>; }

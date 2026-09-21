@@ -1,0 +1,1 @@
+export function NotFound() { return <div className="p-8"><h1>404 Not Found - Lost in Space</h1></div>; }

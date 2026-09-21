@@ -1,0 +1,1 @@
+import { useParams } from "react-router-dom"; export function RegisteredPage() { const { slug } = useParams(); return <div className="p-8"><h1>Registered Confirmation for {slug}</h1></div>; }

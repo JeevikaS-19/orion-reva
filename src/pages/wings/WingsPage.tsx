@@ -1,0 +1,1 @@
+export function WingsPage() { return <div className="p-8"><h1>Wings Page Placeholder</h1></div>; }

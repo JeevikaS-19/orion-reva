@@ -1,0 +1,1 @@
+import { useParams } from "react-router-dom"; export function RegisterPage() { const { slug } = useParams(); return <div className="p-8"><h1>Register Page Placeholder for {slug}</h1></div>; }

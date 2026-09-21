@@ -1,0 +1,1 @@
+export function JoinPage() { return <div className="p-8"><h1>Join Page Placeholder</h1></div>; }

@@ -1,0 +1,1 @@
+export function EventsPage() { return <div className="p-8"><h1>Events Page Placeholder</h1></div>; }

@@ -1,0 +1,1 @@
+export function TeamPage() { return <div className="p-8"><h1>Team Page Placeholder</h1></div>; }
