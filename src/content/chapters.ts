@@ -1,0 +1,42 @@
+export const CHAPTERS = [
+  {
+    id: 'hero',
+    stars: ['meissa'],
+    title: 'Orion',
+    text: 'Every domain. One sky.',
+    ctaText: 'Scroll to look up',
+    ctaLink: '',
+  },
+  {
+    id: 'about',
+    stars: ['betelgeuse', 'bellatrix'],
+    title: 'Our story',
+    text: 'Started by friends who refused to pick sides.',
+    ctaText: 'About',
+    ctaLink: '/about',
+  },
+  {
+    id: 'wings',
+    stars: ['alnitak', 'alnilam', 'mintaka'],
+    title: 'Wings',
+    text: 'TODO Wing 1, TODO Wing 2, TODO Wing 3',
+    ctaText: 'Wings',
+    ctaLink: '/wings',
+  },
+  {
+    id: 'events',
+    stars: ['saiph'],
+    title: 'Events',
+    text: 'TODO Future Event 1',
+    ctaText: 'Events',
+    ctaLink: '/events',
+  },
+  {
+    id: 'join',
+    stars: ['rigel'],
+    title: 'Your turn',
+    text: 'Ready to join the club?',
+    ctaText: 'Join',
+    ctaLink: '/join',
+  },
+] as const;

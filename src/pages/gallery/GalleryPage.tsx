@@ -1,0 +1,1 @@
+export function GalleryPage() { return <div className="p-8"><h1>Gallery Page Placeholder</h1></div>; }

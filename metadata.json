@@ -1,0 +1,8 @@
+{
+  "name": "The Orion Club",
+  "description": "Collegiate celestial guild exploring observational technology, speculative design, creative arts, and competitive challenges.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
