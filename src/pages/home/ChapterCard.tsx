@@ -21,46 +21,78 @@ export function ChapterCard({ chapter, progress, chapterIndex, totalChapters, is
     const startP = chapterIndex / totalChapters;
     const endP = (chapterIndex + 1) / totalChapters;
     
-    // Card fades and slides in 0.15 -> 0.4 of local progress
-    // Card fades out 0.85 -> 1 of local progress
-    if (progress >= startP && progress < endP) {
-      const localP = (progress - startP) / (endP - startP);
+    const isFirstChapterAtStart = chapterIndex === 0 && progress <= startP;
+    const isLastChapterAtEnd = chapterIndex === totalChapters - 1 && progress >= endP;
+    const isInRange = progress >= startP && progress < endP;
+
+    if (isFirstChapterAtStart) {
+      opacity = 1;
+      y = 0;
+    } else if (isInRange || isLastChapterAtEnd) {
+      const localP = isLastChapterAtEnd ? 1 : (progress - startP) / (endP - startP);
       
-      if (localP < 0.15) {
-        opacity = 0;
-        y = 50;
-      } else if (localP < 0.4) {
-        const t = (localP - 0.15) / (0.4 - 0.15);
-        opacity = t;
-        y = 50 * (1 - t);
-      } else if (localP < 0.85) {
-        opacity = 1;
-        y = 0;
+      if (chapterIndex === 0) {
+        // Chapter 0 (Hero) is immediately visible at top of page (localP 0 -> 0.85)
+        if (localP < 0.85) {
+          opacity = 1;
+          y = 0;
+        } else {
+          const t = (localP - 0.85) / (1 - 0.85);
+          opacity = 1 - t;
+          y = -50 * t;
+        }
       } else {
-        const t = (localP - 0.85) / (1 - 0.85);
-        opacity = 1 - t;
-        y = -50 * t;
+        // Subsequent chapters fade in 0.15 -> 0.4, stay 0.4 -> 0.85, fade out 0.85 -> 1.0
+        if (localP < 0.15) {
+          opacity = 0;
+          y = 50;
+        } else if (localP < 0.4) {
+          const t = (localP - 0.15) / (0.4 - 0.15);
+          opacity = t;
+          y = 50 * (1 - t);
+        } else if (localP < 0.85) {
+          opacity = 1;
+          y = 0;
+        } else {
+          const t = (localP - 0.85) / (1 - 0.85);
+          opacity = 1 - t;
+          y = -50 * t;
+        }
       }
     }
   }
 
-  // If reduced motion, we stack them statically, otherwise absolute positioning for crossfade
+  if (opacity <= 0) {
+    return null;
+  }
+
   return (
-    <motion.div 
-      className={`pointer-events-auto bg-bg-2/80 backdrop-blur-md p-8 rounded-2xl border border-star/10 max-w-md w-full mt-auto mb-10 md:mb-0 md:mr-auto md:ml-[10%] ${isReducedMotion ? 'my-24' : 'absolute top-[50%] -translate-y-[50%]'}`}
-      style={!isReducedMotion ? { opacity, y: `calc(-50% + ${y}px)` } : {}}
+    <div 
+      className={`pointer-events-auto bg-bg-2/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-star/20 max-w-md w-full z-20 shadow-xl ${
+        isReducedMotion 
+          ? 'my-8' 
+          : 'absolute top-1/2 left-4 md:left-[10%]'
+      }`}
+      style={!isReducedMotion ? { opacity, transform: `translateY(calc(-50% + ${y}px))` } : {}}
     >
-      <h2 className="text-3xl mb-4 font-display text-star">{chapter.title}</h2>
-      <p className="text-muted mb-6">{chapter.text}</p>
+      <div className="text-xs font-mono text-star/70 uppercase tracking-widest mb-2">
+        0{chapterIndex + 1} / CHAPTER
+      </div>
+      <h2 className="text-3xl md:text-4xl mb-3 font-display text-star drop-shadow">{chapter.title}</h2>
+      <p className="text-muted mb-6 text-base md:text-lg leading-relaxed">{chapter.text}</p>
       {chapter.ctaLink ? (
-        <Link to={chapter.ctaLink} className="inline-block px-6 py-3 bg-star text-bg font-bold rounded-full hover:bg-betelgeuse hover:text-white transition-colors focus:ring-2 focus:ring-star focus:outline-none">
+        <Link 
+          to={chapter.ctaLink} 
+          className="inline-flex items-center gap-2 px-6 py-3 bg-star text-bg font-bold rounded-full hover:bg-betelgeuse hover:text-white transition-all shadow-lg hover:shadow-star/20 focus:ring-2 focus:ring-star focus:outline-none"
+        >
           {chapter.ctaText}
+          <span>→</span>
         </Link>
       ) : (
-        <span className="inline-block px-6 py-3 text-muted border border-muted/30 rounded-full">
+        <span className="inline-block px-6 py-3 text-muted border border-muted/30 rounded-full text-sm">
           {chapter.ctaText}
         </span>
       )}
-    </motion.div>
+    </div>
   );
 }

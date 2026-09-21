@@ -47,7 +47,7 @@ export function HomePage() {
           <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
             <OrionFigure progress={progress} isReducedMotion={false} />
             
-            <div className="relative w-full h-full max-w-7xl mx-auto px-4 flex flex-col justify-end md:justify-center">
+            <div className="relative w-full h-full max-w-7xl mx-auto px-4 flex flex-col justify-end md:justify-center z-20 pointer-events-none">
               {CHAPTERS.map((chapter, i) => (
                 <ChapterCard 
                   key={chapter.id} 
